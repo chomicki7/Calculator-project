@@ -1,10 +1,10 @@
 body {
   background-color: rgb(180, 180, 180);
-  font-family: 'Exo', sans-serif;
+  font-family: "Exo", sans-serif;
 }
 
 .calculator {
-  margin: 10% auto;
+  margin: 20vh auto;
   width: 323px;
   display: grid;
   padding: 2px;
@@ -13,15 +13,15 @@ body {
   grid-template-columns: 80px 80px 80px 80px;
   grid-template-rows: 20px 35px 65px 65px 65px 65px 65px;
   grid-gap: 1px;
+  border-radius: 1%;
 }
-
-
 
 .grey-color {
   background-color: rgb(133, 133, 133);
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 1%;
 }
 
 .darkgrey-color {
@@ -38,7 +38,7 @@ body {
 }
 
 .result {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
   background-color: black;
   grid-column: 1 / 5;
   display: flex;
