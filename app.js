@@ -1,4 +1,4 @@
-const numbers = document.querySelectorAll(".darkgrey-color");
+const numbers = document.querySelectorAll(".darkGrey-color");
 const equal = document.querySelector(".equal-btn");
 const result = document.querySelector(".result");
 const clearBtn = document.querySelector(".clear-btn");
@@ -8,18 +8,23 @@ const minusBtn = document.querySelector(".minus-btn");
 const splitBtn = document.querySelector(".split-btn");
 const timesBtn = document.querySelector(".times-btn");
 
-//calculator has 20 spaces
+//hidden div created to measure the pixels the numbers are occupying and avoid overflowing 
+// on the calculator display 
+const calculatorWidth = document.querySelector(".measuringDiv");
 
-let sum = 0;
+// variables to save the numbers the user will operate with
+let firstNumber = 0;
+let secondNumber = 0;
 
 clearBtn.addEventListener("click", function () {
   result.textContent = 0;
   currentCalculation.textContent = "";
+  calculatorWidth.textContent = "";
 });
 
 numbers.forEach((item) => {
   item.addEventListener("click", function () {
-    if (result.textContent.length == 19) {
+    if (calculatorWidth.clientWidth > 310) {
       limitReached(result.textContent);
       return;
     }
@@ -27,13 +32,20 @@ numbers.forEach((item) => {
       result.textContent = "";
     }
     result.textContent += parseInt(item.dataset.value);
+    calculatorWidth.textContent += parseInt(item.dataset.value);
   });
 });
 
-// if calculator reaches digits limit show alert
+plusBtn.addEventListener("click", function () {});
+
+// if calculator reaches digits limit shows alert
+
 const limitReached = (text) => {
-  result.textContent = "limit reached";
+  // check that the alert is not shown already
+  if (result.textContent !== "limit reached") {
+    result.textContent = "limit reached";
+  }
   setTimeout(() => {
     result.textContent = text;
-  }, 800);
+  }, 500);
 };
