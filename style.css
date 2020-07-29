@@ -68,7 +68,7 @@ body {
 }
 
 .measuringDiv {
-  visibility: hidden;
+/*   visibility: hidden; */
   font-size: 1.5rem;
   position: absolute;
   height: auto;
