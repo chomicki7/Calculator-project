@@ -16,6 +16,16 @@ body {
   border-radius: 1%;
 }
 
+.grey-color:hover,
+.dot-btn:hover,
+.darkGrey-color:hover,
+.clear-btn:hover,
+.equal-btn:hover {
+  border-width: 0.093rem;
+  border-color: rgb(109, 108, 108);
+  border-style: outset;
+}
+
 .grey-color {
   background-color: rgb(133, 133, 133);
   display: flex;
@@ -68,7 +78,7 @@ body {
 }
 
 .measuringDiv {
-/*   visibility: hidden; */
+  /*   visibility: hidden; */
   font-size: 1.5rem;
   position: absolute;
   height: auto;
