@@ -1,5 +1,3 @@
-/* Issues: measuring the calculator display width, using grid,
- */
 
 const numbers = document.querySelectorAll(".darkGrey-color");
 const equal = document.querySelector(".equal-btn");
@@ -10,15 +8,16 @@ const plusBtn = document.querySelector(".plus-btn");
 const minusBtn = document.querySelector(".minus-btn");
 const splitBtn = document.querySelector(".split-btn");
 const timesBtn = document.querySelector(".times-btn");
-const rangeText = "Limit reached";
+const dotBtn = document.querySelector(".dot-btn");
 
 /* hidden div created to measure the pixels the numbers are occupying and avoid overflowing
  on the calculator display */
 const calculatorWidth = document.querySelector(".measuringDiv");
 
-// results variable and another one to save the second number to operate with
+const rangeText = "Limit reached";
 let finalValue = 0;
-let firstNum = 0;
+let limit = false;
+let decimal = false;
 let operator;
 
 clearBtn.addEventListener("click", function () {
@@ -26,48 +25,66 @@ clearBtn.addEventListener("click", function () {
   doneMath.textContent = "";
   calculatorWidth.textContent = "";
   finalValue = 0;
+  decimal = false;
+});
+
+dotBtn.addEventListener("click", function () {
+  //check there is not a decimal already nor a result is being shown
+  if (!decimal && operator != "=") {
+    result.textContent = result.textContent + ".";
+    decimal = true;
+  } else {
+    return;
+  }
 });
 
 numbers.forEach((item) => {
   item.addEventListener("click", function () {
-    // check for the length of the num to display
+    //check that limit was not reached and the alert is not being shown
+    if (limit) {
+      return;
+    }
+    // check for the length of the num to display comparing it with the hidden div
     if (calculatorWidth.clientWidth > 310) {
       limitReached(result.textContent);
       return;
     }
-    //check that limit reached text is not shown
-    if (result.textContent == rangeText) {
-      return;
-    }
-    if (result.textContent == 0) {
-      // number cant start with ceros
+    //number cant start with cero unless a decimal is being created
+    if (result.textContent == 0 && !decimal) {
       result.textContent = "";
     }
-    //display of every number pressed as string
-    result.textContent += item.dataset.value;
-
-    //adds items to the div that later we use to check the width of the calculator display
-    calculatorWidth.textContent += parseInt(item.dataset.value);
+    //numbers pressed shown as strings to add it at the end. Check that a result is not being shown
+    if (operator == "=") {
+      finalValue = 0;
+      result.textContent = item.dataset.value;
+      doneMath.textContent = "";
+      operator = "";
+    } else {
+      result.textContent += item.dataset.value;
+    }
+    //adds items to the div we use to check the width of the calculator display
+    calculatorWidth.textContent += item.dataset.value;
   });
 });
 
 minusBtn.addEventListener("click", function () {
-  //no operate with just cero
-  if (result.textContent == 0 && operator != "=") {
+  let value = parseFloat(result.textContent);
+  // check that limit was not reached nor an operation was just resolved so ceros wont stack
+  if (limit || operator == "-") {
     return;
   }
-  //final value == 0
+  //finalValue == 0, first number input
   if (!finalValue) {
     doneMath.textContent = result.textContent + "-";
-    finalValue = parseInt(result.textContent);
+    finalValue = value;
     result.textContent = 0;
     calculatorWidth.textContent = "";
   } else if (operator != "=") {
     doneMath.textContent += result.textContent + "-";
-    finalValue -= parseInt(result.textContent);
+    finalValue -= value;
     result.textContent = 0;
   } else {
-    finalValue = parseInt(result.textContent);
+    finalValue = value;
     doneMath.textContent = finalValue + "-";
     result.textContent = 0;
   }
@@ -76,12 +93,17 @@ minusBtn.addEventListener("click", function () {
 });
 
 plusBtn.addEventListener("click", function () {
-  let value = parseInt(result.textContent);
+  let value = parseFloat(result.textContent);
+  decimal = false;
+  // check that limit was not reached
+  if (limit) {
+    return;
+  }
   //no operate with just cero
   if (result.textContent == 0 && operator != "=") {
     return;
   }
-  //final value == 0, toma el valor de pantalla
+  //finalValue == 0, first number input
   if (!finalValue) {
     doneMath.textContent = result.textContent + "+";
     finalValue = value;
@@ -102,22 +124,27 @@ plusBtn.addEventListener("click", function () {
 });
 
 timesBtn.addEventListener("click", function () {
+  let value = parseFloat(result.textContent);
+  // check that limit was not reached
+  if (limit) {
+    return;
+  }
   //no operate with just cero
   if (result.textContent == 0 && operator != "=") {
     return;
   }
-  //final value == 0
+  //finalValue == 0, first number input
   if (!finalValue) {
     doneMath.textContent = result.textContent + "x";
-    finalValue = parseInt(result.textContent);
+    finalValue = value;
     result.textContent = 0;
     calculatorWidth.textContent = "";
   } else if (operator != "=") {
     doneMath.textContent += result.textContent + "x";
-    finalValue *= parseInt(result.textContent);
+    finalValue *= value;
     result.textContent = 0;
   } else {
-    finalValue = parseInt(result.textContent);
+    finalValue = value;
     doneMath.textContent = finalValue + "*";
     result.textContent = 0;
   }
@@ -126,22 +153,27 @@ timesBtn.addEventListener("click", function () {
 });
 
 splitBtn.addEventListener("click", function () {
+  let value = parseFloat(result.textContent);
+  // check that limit was not reached
+  if (limit) {
+    return;
+  }
   //no operate with just cero
   if (result.textContent == 0 && operator != "=") {
     return;
   }
-  //final value == 0
+  //finalValue == 0, first number input
   if (!finalValue) {
     doneMath.textContent = result.textContent + "/";
-    finalValue = parseInt(result.textContent);
+    finalValue = value;
     result.textContent = 0;
     calculatorWidth.textContent = "";
   } else if (operator != "=") {
     doneMath.textContent += result.textContent + "/";
-    finalValue /= parseInt(result.textContent);
+    finalValue /= value;
     result.textContent = 0;
   } else {
-    finalValue = parseInt(result.textContent);
+    finalValue = value;
     doneMath.textContent = finalValue + "/";
     result.textContent = 0;
   }
@@ -150,44 +182,41 @@ splitBtn.addEventListener("click", function () {
 });
 
 equal.addEventListener("click", function () {
+  let value = parseFloat(result.textContent);
   if (result.textContent == 0) {
     result.textContent = finalValue;
+    operator = "=";
+    calculatorWidth.textContent = result.textContent;
+    return;
   } else if (operator == "+") {
     doneMath.textContent += result.textContent;
-    finalValue += parseInt(result.textContent);
-    result.textContent = finalValue;
+    finalValue += value;
   } else if (operator == "/") {
     doneMath.textContent += result.textContent;
-    finalValue /= parseInt(result.textContent);
-    result.textContent = finalValue.toFixed(4);
+    finalValue /= value;
   } else if (operator == "-") {
     doneMath.textContent += result.textContent;
-    finalValue -= parseInt(result.textContent);
-    result.textContent = finalValue;
+    finalValue -= value;
   } else if (operator == "*") {
     doneMath.textContent += result.textContent;
-    finalValue *= parseInt(result.textContent);
+    finalValue *= value;
+  }
+  if (Number.isInteger(finalValue)) {
     result.textContent = finalValue;
+  } else {
+    result.textContent = finalValue.toFixed(4);
+    decimal = true;
   }
   operator = "=";
   calculatorWidth.textContent = result.textContent;
 });
 
-const equalCheck = () => {
-  if (operator == "=") {
-    console.log("IN");
-    doneMath.textContent = "";
-    finalValue = result.textContent;
-  }
-};
-
 // if calculator reaches digits limit shows alert
 const limitReached = (text) => {
-  // check that the alert is not shown already
-  if (result.textContent !== rangeText) {
-    result.textContent = rangeText;
-  }
+  result.textContent = rangeText;
+  limit = true;
   setTimeout(() => {
     result.textContent = text;
+    limit = false;
   }, 500);
 };
