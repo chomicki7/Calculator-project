@@ -30,7 +30,6 @@ clearBtn.addEventListener("click", function () {
 
 numbers.forEach((item) => {
   item.addEventListener("click", function () {
-    console.log("number", finalValue);
     // check for the length of the num to display
     if (calculatorWidth.clientWidth > 310) {
       limitReached(result.textContent);
@@ -54,7 +53,7 @@ numbers.forEach((item) => {
 
 minusBtn.addEventListener("click", function () {
   //no operate with just cero
-  if (result.textContent == 0) {
+  if (result.textContent == 0 && operator != "=") {
     return;
   }
   //final value == 0
@@ -73,12 +72,13 @@ minusBtn.addEventListener("click", function () {
     result.textContent = 0;
   }
   operator = "-";
+  calculatorWidth.textContent = result.textContent;
 });
 
 plusBtn.addEventListener("click", function () {
   let value = parseInt(result.textContent);
   //no operate with just cero
-  if (result.textContent == 0) {
+  if (result.textContent == 0 && operator != "=") {
     return;
   }
   //final value == 0, toma el valor de pantalla
@@ -93,16 +93,17 @@ plusBtn.addEventListener("click", function () {
     finalValue += value;
     result.textContent = 0;
   } else {
-    finalValue = parseInt(result.textContent);
+    finalValue = value;
     doneMath.textContent = finalValue + "+";
     result.textContent = 0;
   }
   operator = "+";
+  calculatorWidth.textContent = result.textContent;
 });
 
 timesBtn.addEventListener("click", function () {
   //no operate with just cero
-  if (result.textContent == 0) {
+  if (result.textContent == 0 && operator != "=") {
     return;
   }
   //final value == 0
@@ -121,11 +122,12 @@ timesBtn.addEventListener("click", function () {
     result.textContent = 0;
   }
   operator = "*";
+  calculatorWidth.textContent = result.textContent;
 });
 
 splitBtn.addEventListener("click", function () {
   //no operate with just cero
-  if (result.textContent == 0) {
+  if (result.textContent == 0 && operator != "=") {
     return;
   }
   //final value == 0
@@ -144,6 +146,7 @@ splitBtn.addEventListener("click", function () {
     result.textContent = 0;
   }
   operator = "/";
+  calculatorWidth.textContent = result.textContent;
 });
 
 equal.addEventListener("click", function () {
@@ -156,7 +159,7 @@ equal.addEventListener("click", function () {
   } else if (operator == "/") {
     doneMath.textContent += result.textContent;
     finalValue /= parseInt(result.textContent);
-    result.textContent = finalValue;
+    result.textContent = finalValue.toFixed(4);
   } else if (operator == "-") {
     doneMath.textContent += result.textContent;
     finalValue -= parseInt(result.textContent);
@@ -167,6 +170,7 @@ equal.addEventListener("click", function () {
     result.textContent = finalValue;
   }
   operator = "=";
+  calculatorWidth.textContent = result.textContent;
 });
 
 const equalCheck = () => {
