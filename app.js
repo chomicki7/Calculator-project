@@ -45,7 +45,7 @@ numbers.forEach((item) => {
       return;
     }
     // check for the length of the num to display comparing it with the hidden div
-    if (calculatorWidth.clientWidth > 310) {
+    if (calculatorWidth.clientWidth > 300) {
       limitReached(result.textContent);
       return;
     }

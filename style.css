@@ -11,7 +11,7 @@ body {
   background-color: black;
   color: aliceblue;
   grid-template-columns: 80px 80px 80px 80px;
-  grid-template-rows: 20px 35px 65px 65px 65px 65px 65px;
+  grid-template-rows: 20px 40px 65px 65px 65px 65px 65px;
   grid-gap: 1px;
   border-radius: 1%;
 }
@@ -44,7 +44,11 @@ body {
 .current-calculation {
   background-color: black;
   grid-column: 1 / 5;
-  text-align: end;
+  display: flex;
+  justify-content: flex-end;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .result {
