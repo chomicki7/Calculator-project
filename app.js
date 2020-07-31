@@ -1,4 +1,3 @@
-
 const numbers = document.querySelectorAll(".darkGrey-color");
 const equal = document.querySelector(".equal-btn");
 const result = document.querySelector(".result");
@@ -26,6 +25,7 @@ clearBtn.addEventListener("click", function () {
   calculatorWidth.textContent = "";
   finalValue = 0;
   decimal = false;
+  operator = "";
 });
 
 dotBtn.addEventListener("click", function () {
@@ -79,11 +79,14 @@ minusBtn.addEventListener("click", function () {
     finalValue = value;
     result.textContent = 0;
     calculatorWidth.textContent = "";
+    // not the first input, and no operations been made yet
   } else if (operator != "=") {
     doneMath.textContent += result.textContent + "-";
     finalValue -= value;
     result.textContent = 0;
+    // a result of an operation is being shown and we operate with that value
   } else {
+    console.log("yo");
     finalValue = value;
     doneMath.textContent = finalValue + "-";
     result.textContent = 0;
@@ -109,7 +112,6 @@ plusBtn.addEventListener("click", function () {
     finalValue = value;
     result.textContent = 0;
     calculatorWidth.textContent = "";
-    // ya hay valores ingresados
   } else if (operator != "=") {
     doneMath.textContent += result.textContent + "+";
     finalValue += value;
@@ -189,17 +191,15 @@ equal.addEventListener("click", function () {
     calculatorWidth.textContent = result.textContent;
     return;
   } else if (operator == "+") {
-    doneMath.textContent += result.textContent;
     finalValue += value;
   } else if (operator == "/") {
-    doneMath.textContent += result.textContent;
     finalValue /= value;
   } else if (operator == "-") {
-    doneMath.textContent += result.textContent;
     finalValue -= value;
   } else if (operator == "*") {
-    doneMath.textContent += result.textContent;
     finalValue *= value;
+  } else if (finalValue == 0 && doneMath.textContent == "") {
+    return;
   }
   if (Number.isInteger(finalValue)) {
     result.textContent = finalValue;
@@ -207,8 +207,10 @@ equal.addEventListener("click", function () {
     result.textContent = finalValue.toFixed(4);
     decimal = true;
   }
+  doneMath.textContent += result.textContent;
   operator = "=";
   calculatorWidth.textContent = result.textContent;
+  decimal = false;
 });
 
 // if calculator reaches digits limit shows alert
