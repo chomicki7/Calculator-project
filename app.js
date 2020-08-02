@@ -86,7 +86,6 @@ minusBtn.addEventListener("click", function () {
     result.textContent = 0;
     // a result of an operation is being shown and we operate with that value
   } else {
-    console.log("yo");
     finalValue = value;
     doneMath.textContent = finalValue + "-";
     result.textContent = 0;
@@ -222,3 +221,4 @@ const limitReached = (text) => {
     limit = false;
   }, 500);
 };
+
