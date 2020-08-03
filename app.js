@@ -53,7 +53,7 @@ numbers.forEach((item) => {
     if (result.textContent == 0 && !decimal) {
       result.textContent = "";
     }
-    //numbers pressed shown as strings to add it at the end. Check that a result is not being shown
+    //numbers pressed shown as strings. Check that a result is not being shown
     if (operator == "=") {
       finalValue = 0;
       result.textContent = item.dataset.value;
@@ -74,7 +74,8 @@ minusBtn.addEventListener("click", function () {
     return;
   }
   //finalValue == 0, first number input
-  if (!finalValue) {
+  if (!finalValue && !operator) {
+    //NOTE: si el numero es negativo no poner -9
     doneMath.textContent = result.textContent + "-";
     finalValue = value;
     result.textContent = 0;
@@ -82,7 +83,7 @@ minusBtn.addEventListener("click", function () {
     // not the first input, and no operations been made yet
   } else if (operator != "=") {
     doneMath.textContent += result.textContent + "-";
-    finalValue -= value;
+    operateLastInput(value);
     result.textContent = 0;
     // a result of an operation is being shown and we operate with that value
   } else {
@@ -106,15 +107,17 @@ plusBtn.addEventListener("click", function () {
     return;
   }
   //finalValue == 0, first number input
-  if (!finalValue) {
+  if (!finalValue && !operator) {
     doneMath.textContent = result.textContent + "+";
     finalValue = value;
     result.textContent = 0;
     calculatorWidth.textContent = "";
+    // not the first input, and no operations been made yet
   } else if (operator != "=") {
     doneMath.textContent += result.textContent + "+";
-    finalValue += value;
+    operateLastInput(value);
     result.textContent = 0;
+    // a result of an operation is being shown and we operate with that value
   } else {
     finalValue = value;
     doneMath.textContent = finalValue + "+";
@@ -135,15 +138,17 @@ timesBtn.addEventListener("click", function () {
     return;
   }
   //finalValue == 0, first number input
-  if (!finalValue) {
+  if (!finalValue && !operator) {
     doneMath.textContent = result.textContent + "x";
     finalValue = value;
     result.textContent = 0;
     calculatorWidth.textContent = "";
+    // not the first input, and no operations been made yet
   } else if (operator != "=") {
     doneMath.textContent += result.textContent + "x";
-    finalValue *= value;
+    operateLastInput(value);
     result.textContent = 0;
+    // a result of an operation is being shown and we operate with that value
   } else {
     finalValue = value;
     doneMath.textContent = finalValue + "*";
@@ -164,14 +169,14 @@ splitBtn.addEventListener("click", function () {
     return;
   }
   //finalValue == 0, first number input
-  if (!finalValue) {
+  if (!finalValue && operator == "") {
     doneMath.textContent = result.textContent + "/";
     finalValue = value;
     result.textContent = 0;
     calculatorWidth.textContent = "";
   } else if (operator != "=") {
     doneMath.textContent += result.textContent + "/";
-    finalValue /= value;
+    operateLastInput(value);
     result.textContent = 0;
   } else {
     finalValue = value;
@@ -184,20 +189,16 @@ splitBtn.addEventListener("click", function () {
 
 equal.addEventListener("click", function () {
   let value = parseFloat(result.textContent);
-  if (result.textContent == 0) {
+  doneMath.textContent += result.textContent;
+  // 0 in the result display
+  if (!value) {
     result.textContent = finalValue;
     operator = "=";
     calculatorWidth.textContent = result.textContent;
     return;
-  } else if (operator == "+") {
-    finalValue += value;
-  } else if (operator == "/") {
-    finalValue /= value;
-  } else if (operator == "-") {
-    finalValue -= value;
-  } else if (operator == "*") {
-    finalValue *= value;
-  } else if (finalValue == 0 && doneMath.textContent == "") {
+  }
+  operateLastInput(value);
+  if (finalValue == 0 && doneMath.textContent == "") {
     return;
   }
   if (Number.isInteger(finalValue)) {
@@ -206,11 +207,22 @@ equal.addEventListener("click", function () {
     result.textContent = finalValue.toFixed(4);
     decimal = true;
   }
-  doneMath.textContent += result.textContent;
   operator = "=";
   calculatorWidth.textContent = result.textContent;
   decimal = false;
 });
+
+const operateLastInput = (value) => {
+  if (operator == "+") {
+    finalValue += value;
+  } else if (operator == "/") {
+    finalValue /= value;
+  } else if (operator == "-") {
+    finalValue -= value;
+  } else if (operator == "*") {
+    finalValue *= value;
+  }
+};
 
 // if calculator reaches digits limit shows alert
 const limitReached = (text) => {
@@ -221,4 +233,3 @@ const limitReached = (text) => {
     limit = false;
   }, 500);
 };
-
