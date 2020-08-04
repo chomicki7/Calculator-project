@@ -7,7 +7,7 @@ const dotBtn = document.querySelector(".dot-btn");
 const operations = document.querySelectorAll(".grey-color");
 
 /* hidden div created to measure the pixels the numbers are occupying and avoid overflowing
- on the calculator display */
+ on the calculator main display */
 const calculatorWidth = document.querySelector(".measuringDiv");
 
 const rangeText = "Limit reached";
@@ -40,7 +40,7 @@ numbers.forEach((item) => {
     if (result.textContent == 0 && !decimal) {
       result.textContent = "";
     }
-    //numbers pressed shown as strings. Check that a result is not being shown
+    //numbers pressed added as strings, checks that a result is not being shown
     if (operator == "=") {
       finalValue = 0;
       result.textContent = item.dataset.value;
@@ -49,21 +49,22 @@ numbers.forEach((item) => {
     } else {
       result.textContent += item.dataset.value;
     }
-    //adds items to the div we use to check the width of the calculator display
+    //adds items to the div to check the width of the calculator display
     calculatorWidth.textContent += item.dataset.value;
   });
 });
 
+
 operations.forEach((item) => {
   item.addEventListener("click", function () {
-    // save the inputted number
+    // save the inputted parsing it to a float considering decimals
     let value = parseFloat(result.textContent);
     decimal = false;
     // check that limit was not reached
     if (limit) {
       return;
     }
-    //no operate with just cero
+    //cant operate with just cero
     if (result.textContent == 0 && operator != "=") {
       return;
     }
@@ -71,26 +72,40 @@ operations.forEach((item) => {
   });
 });
 
+// takes the value inputted and the operation selected to modify the global finalValue(the result) variable
 const operating = (value, currentOperation) => {
-  //finalValue == 0, first number input
+  //finalValue == 0, first number input case
   if (!finalValue && !operator) {
     doneMath.textContent = result.textContent + currentOperation;
     finalValue = value;
     calculatorWidth.textContent = "";
-    // not the first input, and no operations been made yet
+    // not the first input, operate with the number saved and the
   } else if (operator != "=") {
     doneMath.textContent += result.textContent + currentOperation;
     operateLastInput(value);
-    // a result of an operation is being shown and we operate with that value
+    // a result of an operation is being shown and must operate with that value
   } else {
     finalValue = value;
     doneMath.textContent = finalValue + currentOperation;
   }
   result.textContent = 0;
+  //global variable to keep track of the last operation selected if any
   operator = currentOperation;
   calculatorWidth.textContent = result.textContent;
 };
 
+// modifies finalValue (the global var holding the result) with the new input and operation selected
+const operateLastInput = (value) => {
+  if (operator == "+") {
+    finalValue += value;
+  } else if (operator == "/") {
+    finalValue /= value;
+  } else if (operator == "-") {
+    finalValue -= value;
+  } else if (operator == "*") {
+    finalValue *= value;
+  }
+};
 
 dotBtn.addEventListener("click", function () {
   //check there is not a decimal already nor a result is being shown
@@ -115,8 +130,10 @@ equal.addEventListener("click", function () {
     operator = "=";
     calculatorWidth.textContent = result.textContent;
     return;
-  }
+  } 
+  // process the last operation selected
   operateLastInput(value);
+  //if result is integer, don't show decimals
   if (Number.isInteger(finalValue)) {
     result.textContent = finalValue;
   } else {
@@ -128,19 +145,7 @@ equal.addEventListener("click", function () {
   decimal = false;
 });
 
-const operateLastInput = (value) => {
-  if (operator == "+") {
-    finalValue += value;
-  } else if (operator == "/") {
-    finalValue /= value;
-  } else if (operator == "-") {
-    finalValue -= value;
-  } else if (operator == "*") {
-    finalValue *= value;
-  }
-};
-
-// if calculator reaches digits limit shows alert
+// if calculator reaches digits limit on main display shows alert
 const limitReached = (text) => {
   result.textContent = rangeText;
   limit = true;
