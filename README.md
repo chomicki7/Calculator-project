@@ -1,5 +1,4 @@
 # Calculator-project
 
-Calculator application 
+Calculator application bulid from scratch
 
-#practicing 
