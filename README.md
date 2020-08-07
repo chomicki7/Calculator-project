@@ -1,5 +1,4 @@
 # Calculator-project
 
-Calculator application showcasing Css Grid
+Calculator application bulid from scratch
 
-#practicing 
