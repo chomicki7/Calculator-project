@@ -56,7 +56,7 @@ numbers.forEach((item) => {
 
 
 operations.forEach((item) => {
-  item.addEventListener("click", function () {
+  item.addEventListener("click", () => {
     // save the inputted parsing it to a float considering decimals
     let value = parseFloat(result.textContent);
     decimal = false;
@@ -107,7 +107,7 @@ const operateLastInput = (value) => {
   }
 };
 
-dotBtn.addEventListener("click", function () {
+dotBtn.addEventListener("click", () => {
   //check there is not a decimal already nor a result is being shown
   if (!decimal && operator != "=") {
     result.textContent = result.textContent + ".";
@@ -117,7 +117,7 @@ dotBtn.addEventListener("click", function () {
   }
 });
 
-equal.addEventListener("click", function () {
+equal.addEventListener("click", () => {
   let value = parseFloat(result.textContent);
   // return if equal is pressed many times
   if ((finalValue == 0 && doneMath.textContent == "") || operator == "=") {
