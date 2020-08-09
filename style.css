@@ -24,10 +24,11 @@ body {
   border-width: 0.093rem;
   border-color: rgb(109, 108, 108);
   border-style: outset;
+  cursor: pointer;
 }
 
 .grey-color {
-  background-color: rgb(133, 133, 133);
+  background-color: rgb(167, 98, 8);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -73,7 +74,7 @@ body {
 }
 
 .equal-btn {
-  background-color: rgb(199, 119, 0);
+  background-color: rgb(167, 98, 8);
   grid-column: 4 / 5;
   grid-row: 6 / 8;
   display: flex;
