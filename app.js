@@ -47,6 +47,7 @@ numbers.forEach((item) => {
       doneMath.textContent = "";
       operator = "";
     } else {
+      console.log("number final else");
       result.textContent += item.dataset.value;
     }
     //adds items to the div to check the width of the calculator display
@@ -54,18 +55,14 @@ numbers.forEach((item) => {
   });
 });
 
-
 operations.forEach((item) => {
   item.addEventListener("click", () => {
     // save the inputted parsing it to a float considering decimals
     let value = parseFloat(result.textContent);
+    console.log("operations value: ", value);
     decimal = false;
     // check that limit was not reached
     if (limit) {
-      return;
-    }
-    //cant operate with just cero
-    if (result.textContent == 0 && operator != "=") {
       return;
     }
     operating(value, item.dataset.value);
@@ -74,6 +71,8 @@ operations.forEach((item) => {
 
 // takes the value inputted and the operation selected to modify the global finalValue(the result) variable
 const operating = (value, currentOperation) => {
+  console.log("finalValue: ", finalValue);
+  console.log("value: ", value);
   //finalValue == 0, first number input case
   if (!finalValue && !operator) {
     doneMath.textContent = result.textContent + currentOperation;
@@ -119,18 +118,13 @@ dotBtn.addEventListener("click", () => {
 
 equal.addEventListener("click", () => {
   let value = parseFloat(result.textContent);
+  console.log("equal value: ", value);
+  console.log("equal finalValue: ", finalValue);
   // return if equal is pressed many times
   if ((finalValue == 0 && doneMath.textContent == "") || operator == "=") {
     return;
   }
   doneMath.textContent += result.textContent;
-  // 0 in the result display
-  if (!value) {
-    result.textContent = finalValue;
-    operator = "=";
-    calculatorWidth.textContent = result.textContent;
-    return;
-  } 
   // process the last operation selected
   operateLastInput(value);
   //if result is integer, don't show decimals
