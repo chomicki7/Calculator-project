@@ -55,11 +55,12 @@ numbers.forEach((item) => {
   });
 });
 
+//NOTE: Fix to not make many operations just with cero
+
 operations.forEach((item) => {
   item.addEventListener("click", () => {
     // save the inputted parsing it to a float considering decimals
     let value = parseFloat(result.textContent);
-    console.log("operations value: ", value);
     decimal = false;
     // check that limit was not reached
     if (limit) {
@@ -71,8 +72,6 @@ operations.forEach((item) => {
 
 // takes the value inputted and the operation selected to modify the global finalValue(the result) variable
 const operating = (value, currentOperation) => {
-  console.log("finalValue: ", finalValue);
-  console.log("value: ", value);
   //finalValue == 0, first number input case
   if (!finalValue && !operator) {
     doneMath.textContent = result.textContent + currentOperation;
@@ -93,7 +92,7 @@ const operating = (value, currentOperation) => {
   calculatorWidth.textContent = result.textContent;
 };
 
-// modifies finalValue (the global var holding the result) with the new input and operation selected
+// modifies finalValue (the global variable holding the result) with the new value and operation selected
 const operateLastInput = (value) => {
   if (operator == "+") {
     finalValue += value;
