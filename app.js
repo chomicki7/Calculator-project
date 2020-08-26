@@ -47,7 +47,6 @@ numbers.forEach((item) => {
       doneMath.textContent = "";
       operator = "";
     } else {
-      console.log("number final else");
       result.textContent += item.dataset.value;
     }
     //adds items to the div to check the width of the calculator display
