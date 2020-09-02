@@ -1,0 +1,25 @@
+{
+  "name": "calculator-project",
+  "version": "1.0.0",
+  "description": "Calculator application.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chomicki7/Calculator-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chomicki7/Calculator-project/issues"
+  },
+  "homepage": "https://github.com/chomicki7/Calculator-project#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "engines": {
+    "node": "14.9"
+  }
+}
